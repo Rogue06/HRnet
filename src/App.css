@@ -10,11 +10,19 @@ body {
   line-height: 1.6;
   color: #333;
   background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+#root {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
   padding: 20px;
 }
 
@@ -24,9 +32,14 @@ h1 {
   margin: 20px 0;
 }
 
+.home-title {
+  text-align: center;
+}
+
 h2 {
   color: #2c3e50;
   margin: 20px 0;
+  text-align: center;
 }
 
 form {
@@ -35,6 +48,9 @@ form {
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 label {

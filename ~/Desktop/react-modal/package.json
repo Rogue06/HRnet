@@ -1,0 +1,45 @@
+{
+  "name": "@rogue06/react-modal",
+  "version": "1.0.0",
+  "description": "Un composant Modal simple et personnalisable pour React",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "webpack --mode production",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "react",
+    "modal",
+    "dialog",
+    "component"
+  ],
+  "author": "Rogue06",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.10",
+    "@babel/preset-env": "^7.26.9",
+    "@babel/preset-react": "^7.26.3",
+    "babel-loader": "^10.0.0",
+    "css-loader": "^7.1.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rogue06/react-modal.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Rogue06/react-modal/issues"
+  },
+  "homepage": "https://github.com/Rogue06/react-modal"
+} 

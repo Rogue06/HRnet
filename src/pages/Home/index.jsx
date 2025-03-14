@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Modal from '../../components/Modal';
 import { useEmployees } from '../../context/EmployeeContext';
 import { states } from '../../utils/data';
+import './Home.css';
 
 const Home = () => {
   // État local pour le formulaire
@@ -58,10 +59,10 @@ const Home = () => {
   };
 
   return (
-    <div className="container">
-      <h1>HRnet</h1>
-      <Link to="/employee-list">View Current Employees</Link>
-      <h2>Create Employee</h2>
+    <div className="container home-container">
+      <h1 className="home-title">HRnet</h1>
+      <Link to="/employee-list" className="nav-link">View Current Employees</Link>
+      <h2 className="home-title">Create Employee</h2>
       
       <form id="create-employee" onSubmit={handleSubmit}>
         <label htmlFor="firstName">First Name</label>

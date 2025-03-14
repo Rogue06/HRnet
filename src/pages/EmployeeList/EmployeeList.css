@@ -2,6 +2,10 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 }
 
 .entries-control select {
@@ -17,6 +21,10 @@
 .table-container {
   overflow-x: auto;
   margin-bottom: 20px;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 }
 
 table {
@@ -24,6 +32,7 @@ table {
   border-collapse: collapse;
   background-color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
 }
 
 th, td {
@@ -37,6 +46,33 @@ th {
   color: white;
   position: sticky;
   top: 0;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  padding-right: 25px;
+}
+
+th:hover {
+  background-color: #3498db;
+}
+
+th.active-sort {
+  background-color: #3498db;
+}
+
+.sort-icon {
+  position: absolute;
+  right: 8px;
+  opacity: 0.6;
+  font-size: 12px;
+  color: white;
+  display: inline-block;
+  letter-spacing: -3px;
+}
+
+.sort-icon.active {
+  opacity: 1;
+  font-weight: bold;
 }
 
 tr:nth-child(even) {
@@ -51,7 +87,8 @@ tr:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 20px 0;
+  margin: 20px auto;
+  max-width: 1000px;
 }
 
 .pagination-controls button {
@@ -79,6 +116,41 @@ tr:hover {
 }
 
 .home-link {
-  display: inline-block;
+  display: block;
   margin-top: 20px;
+  text-align: center;
+}
+
+/* Conteneur principal pour la liste des employés */
+.employee-list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.sort-info {
+  margin-bottom: 15px;
+  text-align: center;
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 5px;
+  max-width: 1000px;
+  width: 100%;
+}
+
+.sort-info p {
+  margin: 0;
+  color: #555;
+}
+
+.sort-info strong {
+  color: #2c3e50;
+}
+
+.sort-help {
+  margin-top: 5px;
+  font-size: 0.85em;
+  color: #777;
+  font-style: italic;
 } 
