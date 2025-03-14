@@ -21,4 +21,63 @@ form#create-employee {
   flex-direction: column;
   align-items: center;
   width: 100%;
+}
+
+/* Styles pour React Select */
+.react-select-container {
+  margin-bottom: 15px;
+}
+
+.react-select__control {
+  border-radius: 4px !important;
+  border: 1px solid #ddd !important;
+  box-shadow: none !important;
+  min-height: 38px !important;
+}
+
+.react-select__control:hover {
+  border-color: #3498db !important;
+}
+
+.react-select__control--is-focused {
+  box-shadow: 0 0 0 1px #3498db !important;
+  border-color: #3498db !important;
+}
+
+.react-select__menu {
+  z-index: 10 !important;
+  border-radius: 4px !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+.react-select__option {
+  padding: 8px 12px !important;
+}
+
+.react-select__option--is-selected {
+  background-color: #3498db !important;
+}
+
+.react-select__option--is-focused:not(.react-select__option--is-selected) {
+  background-color: rgba(52, 152, 219, 0.1) !important;
+}
+
+/* Styles pour DatePicker */
+.react-datepicker-wrapper {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.form-control:focus {
+  border-color: #3498db;
+  outline: none;
 } 
+

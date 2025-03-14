@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import Select from 'react-select';
 import { Link } from 'react-router-dom';
 import Modal from '../../components/Modal';
 import { useEmployees } from '../../context/EmployeeContext';
-import { states } from '../../utils/data';
+import { states } from '../../data/states';
 import './Home.css';
 
 const Home = () => {
@@ -24,6 +27,20 @@ const Home = () => {
 
   // On utilise notre hook personnalisé pour accéder au contexte
   const { addEmployee } = useEmployees();
+
+  // Préparation des options pour React Select
+  const stateOptions = states.map(state => ({
+    value: state.abbreviation,
+    label: state.name
+  }));
+  
+  const departmentOptions = [
+    { value: 'Sales', label: 'Sales' },
+    { value: 'Marketing', label: 'Marketing' },
+    { value: 'Engineering', label: 'Engineering' },
+    { value: 'Human Resources', label: 'Human Resources' },
+    { value: 'Legal', label: 'Legal' }
+  ];
 
   // Fonction pour gérer les changements dans le formulaire
   const handleChange = (e) => {
@@ -84,21 +101,33 @@ const Home = () => {
         />
 
         <label htmlFor="dateOfBirth">Date of Birth</label>
-        <input 
-          type="date" 
-          id="dateOfBirth" 
-          value={formData.dateOfBirth}
-          onChange={handleChange}
-          required
+        <DatePicker
+          id="dateOfBirth"
+          selected={formData.dateOfBirth ? new Date(formData.dateOfBirth) : null}
+          onChange={(date) => {
+            setFormData({
+              ...formData,
+              dateOfBirth: date ? date.toISOString().split('T')[0] : ''
+            });
+          }}
+          dateFormat="yyyy-MM-dd"
+          placeholderText="Select a date"
+          className="form-control"
         />
 
         <label htmlFor="startDate">Start Date</label>
-        <input 
-          type="date" 
-          id="startDate" 
-          value={formData.startDate}
-          onChange={handleChange}
-          required
+        <DatePicker
+          id="startDate"
+          selected={formData.startDate ? new Date(formData.startDate) : null}
+          onChange={(date) => {
+            setFormData({
+              ...formData,
+              startDate: date ? date.toISOString().split('T')[0] : ''
+            });
+          }}
+          dateFormat="yyyy-MM-dd"
+          placeholderText="Select a date"
+          className="form-control"
         />
 
         <fieldset className="address">
@@ -123,19 +152,20 @@ const Home = () => {
           />
 
           <label htmlFor="state">State</label>
-          <select 
-            id="state" 
-            value={formData.state}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select State</option>
-            {states.map((state) => (
-              <option key={state.abbreviation} value={state.abbreviation}>
-                {state.name}
-              </option>
-            ))}
-          </select>
+          <Select
+            inputId="state"
+            options={stateOptions}
+            value={stateOptions.find(option => option.value === formData.state) || null}
+            onChange={(selectedOption) => {
+              setFormData({
+                ...formData,
+                state: selectedOption ? selectedOption.value : ''
+              });
+            }}
+            placeholder="Select State"
+            className="react-select-container"
+            classNamePrefix="react-select"
+          />
 
           <label htmlFor="zipCode">Zip Code</label>
           <input 
@@ -148,18 +178,20 @@ const Home = () => {
         </fieldset>
 
         <label htmlFor="department">Department</label>
-        <select 
-          id="department" 
-          value={formData.department}
-          onChange={handleChange}
-          required
-        >
-          <option value="Sales">Sales</option>
-          <option value="Marketing">Marketing</option>
-          <option value="Engineering">Engineering</option>
-          <option value="Human Resources">Human Resources</option>
-          <option value="Legal">Legal</option>
-        </select>
+        <Select
+          inputId="department"
+          options={departmentOptions}
+          value={departmentOptions.find(option => option.value === formData.department) || null}
+          onChange={(selectedOption) => {
+            setFormData({
+              ...formData,
+              department: selectedOption ? selectedOption.value : 'Sales'
+            });
+          }}
+          placeholder="Select Department"
+          className="react-select-container"
+          classNamePrefix="react-select"
+        />
 
         <button type="submit">Save</button>
       </form>
