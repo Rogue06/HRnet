@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../../assets/logo-hrnet-removebg.png';
 import { useEmployees } from '../../context/EmployeeContext';
 import {
   useReactTable,
@@ -90,7 +91,10 @@ const EmployeeList = () => {
 
   return (
     <div className="container employee-list-container">
-      <h1 className="home-title">Current Employees</h1>
+        <div className="logo-title">
+            <img src={logo} alt="logo" className='logo' />
+            <h1 className="home-title">Current Employees</h1>
+        </div>
       
       <div className="table-controls">
         <div className="entries-control">

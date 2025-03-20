@@ -116,3 +116,15 @@ form#create-employee button[type="submit"]:hover {
   background-color: #0d8aee;
 } 
 
+.logo {
+    width: 100px;
+    height: auto;
+    margin-right: 10px;
+    
+}
+
+.logo-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import logo from '../../assets/logo-hrnet-removebg.png';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Select from 'react-select';
@@ -77,9 +78,14 @@ const Home = () => {
 
   return (
     <div className="container home-container">
-      <h1 className="home-title">HRnet</h1>
+        <div className="logo-title">
+            <img src={logo} alt="logo" className="logo" />
+            <h1 className="home-title">HRnet</h1>
+        </div>
+      <div className="nav-link-container">
       <Link to="/employee-list" className="nav-link">View Current Employees</Link>
       <h2 className="home-title">Create Employee</h2>
+      </div>
       
       <form id="create-employee" onSubmit={handleSubmit}>
         <label htmlFor="firstName">First Name</label>
