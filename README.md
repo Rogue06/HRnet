@@ -19,10 +19,10 @@ HRnet est une application web interne pour la gestion des employés. Ce projet r
 
 ### 2. Développement d'un composant Modal personnalisé
 
-L'un des objectifs majeurs était de convertir le plugin jQuery Modal en un composant React réutilisable. Pour cela, nous avons :
+L'un des objectifs majeurs était de convertir le plugin jQuery Modal en un composant React réutilisable. Pour cela, j'ai :
 
 - Développé un composant Modal en React
-- Publié ce composant sur npm sous le nom `@rogue06/react-modal`
+- Publié ce composant sur GitHub Package sous le nom `@rogue06/react-modal`
 - Ajouté des fonctionnalités d'animation et d'accessibilité
 
 ### 3. Améliorations de performance et UX

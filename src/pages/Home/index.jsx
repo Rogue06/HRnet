@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
-import Modal from '../../components/Modal';
+import Modal from '@rogue06/react-modal';
 import { useEmployees } from '../../context/EmployeeContext';
 import { states } from '../../data/states';
 import './Home.css';
