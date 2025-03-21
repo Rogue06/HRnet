@@ -79,8 +79,11 @@ const Home = () => {
   return (
     <div className="container home-container">
         <div className="logo-title">
-            <img src={logo} alt="logo" className="logo" />
-            <h1 className="home-title">HRnet</h1>
+            <picture>
+                <source srcSet={logo} type="image/webp" />
+                <img src={logo} alt="logo" className="logo" />
+            </picture>
+                <h1 className="home-title">HRnet</h1>
         </div>
       <div className="nav-link-container">
       <Link to="/employee-list" className="nav-link">View Current Employees</Link>
