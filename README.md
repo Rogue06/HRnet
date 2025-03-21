@@ -10,12 +10,12 @@ HRnet est une application web interne pour la gestion des employés. Ce projet r
 
 ### 1. Remplacement des plugins jQuery par des composants React
 
-| Plugins jQuery    | Remplacé par                                                                                 |
-| ----------------- | -------------------------------------------------------------------------------------------- |
-| jQuery Modal      | [@rogue06/react-modal](https://github.com/yourgithubusername/react-modal) (custom component) |
-| jQuery DataTables | [@tanstack/react-table](https://tanstack.com/table/latest)                                   |
-| jQuery DatePicker | [React DatePicker](https://reactdatepicker.com/)                                             |
-| jQuery Select     | [React Select](https://react-select.com/)                                                    |
+| Plugins jQuery    | Remplacé par                                                                      |
+| ----------------- | --------------------------------------------------------------------------------- |
+| jQuery Modal      | [@rogue06/react-modal](https://github.com/Rogue06/react-modal) (custom component) |
+| jQuery DataTables | [@tanstack/react-table](https://tanstack.com/table/latest)                        |
+| jQuery DatePicker | [React DatePicker](https://reactdatepicker.com/)                                  |
+| jQuery Select     | [React Select](https://react-select.com/)                                         |
 
 ### 2. Développement d'un composant Modal personnalisé
 
@@ -39,7 +39,7 @@ L'un des objectifs majeurs était de convertir le plugin jQuery Modal en un comp
 
 ```bash
 # Cloner le projet
-git clone https://github.com/yourgithubusername/hrnet.git
+git clone https://github.com/Rogue06/hrnet.git
 cd hrnet
 
 # Installer les dépendances
@@ -77,11 +77,14 @@ Des tests de performance ont été menés pour comparer l'application jQuery ori
 
 | Métrique                 | jQuery Original | Version React | Amélioration              |
 | ------------------------ | --------------- | ------------- | ------------------------- |
-| First Contentful Paint   | ~2.5s           | ~1.8s         | 52% plus rapide           |
-| Largest Contentful Paint | ~3.8s           | ~0.9s         | 76% plus rapide           |
-| Total Blocking Time      | ~756KB          | ~320KB        | 58% plus petit            |
-| Cumulative Layout Shift  | 67              | 92            | Augmentation de 25 points |
-| Speed Index              | 67              | 92            | Augmentation de 25 points |
+| First Contentful Paint   | ~2.5s           | ~0.6s         | 76% plus rapide           |
+| Largest Contentful Paint | ~3.8s           | ~0.6s         | 84% plus rapide           |
+| Total Blocking Time      | Non disponible  | 0ms           | Performance optimale      |
+| Cumulative Layout Shift  | 0.25            | 0.007         | Réduction de 97%          |
+| Speed Index              | ~3.5s           | 0.6s          | 83% plus rapide           |
+| Score Performance        | ~67             | 100           | Augmentation de 33 points |
+
+Pour la page de liste des employés, les performances sont également exceptionnelles avec un score de 100/100, un First Contentful Paint de 0.5s et un Largest Contentful Paint de 0.5s.
 
 ## Captures d'écran
 
@@ -109,7 +112,7 @@ Des tests de performance ont été menés pour comparer l'application jQuery ori
 
 ## Contributeurs
 
-- [Votre Nom](https://github.com/yourgithubusername)
+- [Rogue06](https://github.com/Rogue06)
 
 ## Licence
 
