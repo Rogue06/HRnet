@@ -2,6 +2,24 @@
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  min-height: 800px;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  min-height: 80px;
+}
+
+.logo {
+  width: 150px;
+  height: 75px;
+  object-fit: contain;
 }
 
 .home-title {
@@ -23,6 +41,13 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 0.9rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.entries-select:focus {
+  border-color: #2196f3;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
 }
 
 .search-input {
@@ -35,10 +60,13 @@
 }
 
 .table-container {
+  position: relative;
   overflow-x: auto;
   margin-bottom: 1.5rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
+  height: 600px;
+  overflow-y: auto;
 }
 
 #employee-table {
@@ -46,6 +74,7 @@
   border-collapse: collapse;
   font-size: 0.9rem;
   background-color: white;
+  table-layout: fixed;
 }
 
 #employee-table th, 
@@ -53,6 +82,9 @@
   padding: 0.75rem 1rem;
   text-align: left;
   border-bottom: 1px solid #eee;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 #employee-table th {
@@ -63,6 +95,9 @@
   user-select: none;
   position: relative;
   transition: background-color 0.2s;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 #employee-table th:hover {
@@ -201,4 +236,107 @@
     margin-left: 0;
     margin-top: 0.5rem;
   }
+}
+
+#employee-table tbody {
+  position: relative;
+}
+
+#employee-table tbody tr[style] {
+  box-sizing: border-box;
+  display: table-row;
+}
+
+/* Styles pour les skeleton loaders */
+.skeleton-row {
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.skeleton-cell {
+  padding: 0.75rem 1rem;
+  position: relative;
+}
+
+.skeleton-content {
+  height: 1.2rem;
+  background-color: rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+/* Loading overlay */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: #2196f3;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Styles pour les contrôles désactivés */
+button:disabled,
+select:disabled,
+input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Ajustement pour le chargement initial */
+.table-container.loading {
+  position: relative;
+}
+
+/* Styles spécifiques à la virtualisation */
+.virtualized-spacer {
+  position: relative;
+}
+
+.virtualized-spacer td {
+  padding: 0 !important;
+  height: 0;
+  border: none !important;
+}
+
+.virtualized-row {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Assurer que la hauteur de chaque ligne est constante */
+#employee-table tr {
+  height: 50px; /* Même valeur que estimateSize dans le virtualiseur */
 } 
