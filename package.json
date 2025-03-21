@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "audit:home": "npm run build && npm run preview & sleep 5 && lighthouse http://localhost:4173/ --only-categories=performance --output json --output html --output-path=./lighthouse/performance-home",
+    "audit:employee-list": "npm run build && npm run preview & sleep 5 && lighthouse http://localhost:4173/employee-list --only-categories=performance --output json --output html --output-path=./lighthouse/performance-employee-list"
+
   },
   "dependencies": {
     "@Rogue06/react-modal": "npm:@rogue06/react-modal@^1.0.1",

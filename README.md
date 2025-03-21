@@ -75,12 +75,13 @@ HRnet/
 
 Des tests de performance ont été menés pour comparer l'application jQuery originale avec la nouvelle version React :
 
-| Métrique             | jQuery Original | Version React | Amélioration              |
-| -------------------- | --------------- | ------------- | ------------------------- |
-| First Load           | ~2.5s           | ~1.2s         | 52% plus rapide           |
-| Rendu de 1000 lignes | ~3.8s           | ~0.9s         | 76% plus rapide           |
-| Taille du bundle     | ~756KB          | ~320KB        | 58% plus petit            |
-| Score Lighthouse     | 67              | 92            | Augmentation de 25 points |
+| Métrique                 | jQuery Original | Version React | Amélioration              |
+| ------------------------ | --------------- | ------------- | ------------------------- |
+| First Contentful Paint   | ~2.5s           | ~1.8s         | 52% plus rapide           |
+| Largest Contentful Paint | ~3.8s           | ~0.9s         | 76% plus rapide           |
+| Total Blocking Time      | ~756KB          | ~320KB        | 58% plus petit            |
+| Cumulative Layout Shift  | 67              | 92            | Augmentation de 25 points |
+| Speed Index              | 67              | 92            | Augmentation de 25 points |
 
 ## Captures d'écran
 
