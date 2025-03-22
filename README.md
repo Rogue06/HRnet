@@ -75,16 +75,20 @@ HRnet/
 
 Des tests de performance ont été menés pour comparer l'application jQuery originale avec la nouvelle version React :
 
-| Métrique                 | jQuery Original | Version React | Amélioration              |
-| ------------------------ | --------------- | ------------- | ------------------------- |
-| First Contentful Paint   | ~2.5s           | ~0.6s         | 76% plus rapide           |
-| Largest Contentful Paint | ~3.8s           | ~0.6s         | 84% plus rapide           |
-| Total Blocking Time      | Non disponible  | 0ms           | Performance optimale      |
-| Cumulative Layout Shift  | 0.25            | 0.007         | Réduction de 97%          |
-| Speed Index              | ~3.5s           | 0.6s          | 83% plus rapide           |
-| Score Performance        | ~67             | 100           | Augmentation de 33 points |
+## 🔍 Comparatif des performances : jQuery vs React
 
-Pour la page de liste des employés, les performances sont également exceptionnelles avec un score de 100/100, un First Contentful Paint de 0.5s et un Largest Contentful Paint de 0.5s.
+Des tests de performance ont été réalisés afin de comparer l’application initiale développée en jQuery avec sa nouvelle version en React. Voici le résumé des résultats observés :
+
+| **Métrique**             | **jQuery Original** | **Version React** | **Différence (temps)**              |
+| ------------------------ | ------------------- | ----------------- | ----------------------------------- |
+| First Contentful Paint   | ~0.6s               | ~1.8s             | +1.2s (moins rapide)                |
+| Largest Contentful Paint | ~0.6s               | ~1.8s             | +1.2s (moins rapide)                |
+| Total Blocking Time      | Non disponible      | 0–90ms            | Optimisation significative          |
+| Cumulative Layout Shift  | 0.25                | 0–0.004           | -0.246 (meilleure stabilité)        |
+| Speed Index              | ~0.6s               | 1.8s              | +1.2s (moins rapide)                |
+| Score Performance        | 100                 | 98                | -2 points (score globale similaire) |
+
+> 💡 **Note :** Bien que les temps de chargement initiaux soient légèrement plus élevés avec React, cette version offre une architecture plus moderne, maintenable, et une expérience utilisateur plus fluide et cohérente à long terme (meilleure stabilité, modularité, performance interactive, etc.).
 
 ## Captures d'écran
 

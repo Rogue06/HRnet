@@ -1,6 +1,9 @@
 import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import { mockEmployees, generateMockEmployees } from '../data/mockEmployees';
 
+// Pour activer/désactiver les données mockées, change simplement cette valeur
+const ENABLE_MOCK_DATA = false; // true pour activer, false pour désactiver
+
 // Étape 1: Création du contexte
 // C'est comme créer une "boîte" vide qui pourra contenir des données
 const EmployeeContext = createContext();
@@ -39,14 +42,19 @@ export const EmployeeProvider = ({ children }) => {
         if (storedEmployees) {
           setEmployees(JSON.parse(storedEmployees));
         } else {
-          // Si aucune donnée n'existe, utiliser les données fictives
-          setEmployees(mockEmployees);
-          localStorage.setItem('employees', JSON.stringify(mockEmployees));
+          // Si aucune donnée n'existe, utiliser les données fictives ou un tableau vide
+          if (ENABLE_MOCK_DATA) {
+            setEmployees(mockEmployees);
+            localStorage.setItem('employees', JSON.stringify(mockEmployees));
+          } else {
+            setEmployees([]);
+            localStorage.setItem('employees', JSON.stringify([]));
+          }
         }
       } catch (error) {
         console.error('Erreur lors du chargement des employés:', error);
-        // En cas d'erreur, utiliser les données fictives
-        setEmployees(mockEmployees);
+        // En cas d'erreur, respecter le paramètre ENABLE_MOCK_DATA
+        setEmployees(ENABLE_MOCK_DATA ? mockEmployees : []);
       } finally {
         setLoading(false);
       }

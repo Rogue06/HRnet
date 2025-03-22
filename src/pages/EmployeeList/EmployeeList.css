@@ -339,4 +339,17 @@ input:disabled {
 /* Assurer que la hauteur de chaque ligne est constante */
 #employee-table tr {
   height: 50px; /* Même valeur que estimateSize dans le virtualiseur */
+}
+
+/* Suppression des styles pour le contrôle des données mockées */
+.mock-data-controls {
+  display: none;
+}
+
+.toggle-mock-button {
+  display: none;
+}
+
+.mock-status {
+  display: none;
 } 
