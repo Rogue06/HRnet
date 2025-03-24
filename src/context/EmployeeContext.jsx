@@ -24,7 +24,7 @@ export const useEmployees = () => {
 };
 
 // Étape 2: Création du Provider (fournisseur de données)
-// C'est un composant qui va "emballer" notre application et fournir les données à tous les composants enfants
+// C'est un composant qui va "emballer" l'application et fournir les données à tous les composants enfants
 export const EmployeeProvider = ({ children }) => {
   // State local pour stocker les employés
   const [employees, setEmployees] = useState([]);
@@ -112,7 +112,7 @@ export const EmployeeProvider = ({ children }) => {
     refresh: loadEmployees // Fonction pour recharger les données
   };
 
-  // Le Provider "emballe" les enfants et leur fournit les données via la prop "value"
+  // Le Provider "enveloppe" les enfants et leur fournit les données via la prop "value"
   return (
     <EmployeeContext.Provider value={value}>
       {children}
