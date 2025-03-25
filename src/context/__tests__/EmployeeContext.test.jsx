@@ -28,7 +28,8 @@ describe('EmployeeContext', () => {
         <TestComponent />
       </EmployeeProvider>
     );
-
+// findByText() est asynchone : il attend que l'élement apparaisse dans le DOM avant de faire l'assertion 
+//   
     expect(await screen.findByText('1')).toBeTruthy();
     expect(screen.getByTestId('employee-name').textContent).toBe('John Doe');
   });
