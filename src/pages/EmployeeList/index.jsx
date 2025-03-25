@@ -44,42 +44,42 @@ const EmployeeList = () => {
       {
         accessorKey: 'firstName',
         header: 'First Name',
-        size: 150,
+        size: 140,
       },
       {
         accessorKey: 'lastName',
         header: 'Last Name',
-        size: 150,
+        size: 140,
       },
       {
         accessorKey: 'startDate',
         header: 'Start Date',
-        size: 150,
+        size: 140,
       },
       {
         accessorKey: 'department',
         header: 'Department',
-        size: 150,
+        size: 140,
       },
       {
         accessorKey: 'dateOfBirth',
         header: 'Date of Birth',
-        size: 150,
+        size: 140,
       },
       {
         accessorKey: 'street',
         header: 'Street',
-        size: 200,
+        size: 160,
       },
       {
         accessorKey: 'city',
         header: 'City',
-        size: 150,
+        size: 130,
       },
       {
         accessorKey: 'state',
         header: 'State',
-        size: 100,
+        size: 130,
       },
       {
         accessorKey: 'zipCode',
