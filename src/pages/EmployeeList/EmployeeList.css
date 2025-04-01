@@ -142,7 +142,10 @@
 }
 
 .pagination-controls {
+    margin: 10px;
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 0.25rem;
 }
 
@@ -253,7 +256,9 @@
   }
   .pagination-controls {
     flex-wrap: wrap;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
+  
   }
   .pagination-controls button {
     margin: 0;

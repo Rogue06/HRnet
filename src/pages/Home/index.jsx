@@ -9,6 +9,110 @@ import { useEmployees } from '../../context/EmployeeContext';
 import { states } from '../../data/states';
 import './Home.css';
 
+// Composant pour les champs d'informations personnelles
+const PersonalInfoFields = ({ formData, handleChange, handleDateChange }) => (
+  <>
+    <label htmlFor="firstName">First Name</label>
+    <input 
+      type="text" 
+      id="firstName" 
+      value={formData.firstName}
+      onChange={handleChange}
+      required
+    />
+
+    <label htmlFor="lastName">Last Name</label>
+    <input 
+      type="text" 
+      id="lastName" 
+      value={formData.lastName}
+      onChange={handleChange}
+      required
+    />
+
+    <label htmlFor="dateOfBirth">Date of Birth</label>
+    <DatePicker
+      id="dateOfBirth"
+      selected={formData.dateOfBirth ? new Date(formData.dateOfBirth) : null}
+      onChange={(date) => handleDateChange('dateOfBirth', date)}
+      dateFormat="yyyy-MM-dd"
+      placeholderText="Select a date"
+      className="form-control"
+    />
+
+    <label htmlFor="startDate">Start Date</label>
+    <DatePicker
+      id="startDate"
+      selected={formData.startDate ? new Date(formData.startDate) : null}
+      onChange={(date) => handleDateChange('startDate', date)}
+      dateFormat="yyyy-MM-dd"
+      placeholderText="Select a date"
+      className="form-control"
+    />
+  </>
+);
+
+// Composant pour les champs d'adresse
+const AddressFields = ({ formData, handleChange, stateOptions, handleSelectChange }) => (
+  <fieldset className="address">
+    <legend>Address</legend>
+
+    <label htmlFor="street">Street</label>
+    <input 
+      type="text" 
+      id="street" 
+      value={formData.street}
+      onChange={handleChange}
+      required
+    />
+
+    <label htmlFor="city">City</label>
+    <input 
+      type="text" 
+      id="city" 
+      value={formData.city}
+      onChange={handleChange}
+      required
+    />
+
+    <label htmlFor="state">State</label>
+    <Select
+      inputId="state"
+      options={stateOptions}
+      value={stateOptions.find(option => option.value === formData.state) || null}
+      onChange={(selectedOption) => handleSelectChange('state', selectedOption)}
+      placeholder="Select State"
+      className="react-select-container"
+      classNamePrefix="react-select"
+    />
+
+    <label htmlFor="zipCode">Zip Code</label>
+    <input 
+      type="number" 
+      id="zipCode" 
+      value={formData.zipCode}
+      onChange={handleChange}
+      required
+    />
+  </fieldset>
+);
+
+// Composant pour le champ du département
+const DepartmentField = ({ formData, departmentOptions, handleSelectChange }) => (
+  <>
+    <label htmlFor="department">Department</label>
+    <Select
+      inputId="department"
+      options={departmentOptions}
+      value={departmentOptions.find(option => option.value === formData.department) || null}
+      onChange={(selectedOption) => handleSelectChange('department', selectedOption)}
+      placeholder="Select Department"
+      className="react-select-container"
+      classNamePrefix="react-select"
+    />
+  </>
+);
+
 const Home = () => {
   // État local pour le formulaire
   const [formData, setFormData] = useState({
@@ -51,6 +155,22 @@ const Home = () => {
       [id]: value
     });
   };
+  
+  // Fonction pour gérer les changements de date
+  const handleDateChange = (field, date) => {
+    setFormData({
+      ...formData,
+      [field]: date ? date.toISOString().split('T')[0] : ''
+    });
+  };
+  
+  // Fonction pour gérer les changements dans les Select
+  const handleSelectChange = (field, selectedOption) => {
+    setFormData({
+      ...formData,
+      [field]: selectedOption ? selectedOption.value : (field === 'department' ? 'Sales' : '')
+    });
+  };
 
   // Fonction pour soumettre le formulaire
   const handleSubmit = (e) => {
@@ -91,115 +211,23 @@ const Home = () => {
       </div>
       
       <form id="create-employee" onSubmit={handleSubmit}>
-        <label htmlFor="firstName">First Name</label>
-        <input 
-          type="text" 
-          id="firstName" 
-          value={formData.firstName}
-          onChange={handleChange}
-          required
+        <PersonalInfoFields
+          formData={formData}
+          handleChange={handleChange}
+          handleDateChange={handleDateChange}
         />
-
-        <label htmlFor="lastName">Last Name</label>
-        <input 
-          type="text" 
-          id="lastName" 
-          value={formData.lastName}
-          onChange={handleChange}
-          required
+        
+        <AddressFields
+          formData={formData}
+          handleChange={handleChange}
+          stateOptions={stateOptions}
+          handleSelectChange={handleSelectChange}
         />
-
-        <label htmlFor="dateOfBirth">Date of Birth</label>
-        <DatePicker
-          id="dateOfBirth"
-          selected={formData.dateOfBirth ? new Date(formData.dateOfBirth) : null}
-          onChange={(date) => {
-            setFormData({
-              ...formData,
-              dateOfBirth: date ? date.toISOString().split('T')[0] : ''
-            });
-          }}
-          dateFormat="yyyy-MM-dd"
-          placeholderText="Select a date"
-          className="form-control"
-        />
-
-        <label htmlFor="startDate">Start Date</label>
-        <DatePicker
-          id="startDate"
-          selected={formData.startDate ? new Date(formData.startDate) : null}
-          onChange={(date) => {
-            setFormData({
-              ...formData,
-              startDate: date ? date.toISOString().split('T')[0] : ''
-            });
-          }}
-          dateFormat="yyyy-MM-dd"
-          placeholderText="Select a date"
-          className="form-control"
-        />
-
-        <fieldset className="address">
-          <legend>Address</legend>
-
-          <label htmlFor="street">Street</label>
-          <input 
-            type="text" 
-            id="street" 
-            value={formData.street}
-            onChange={handleChange}
-            required
-          />
-
-          <label htmlFor="city">City</label>
-          <input 
-            type="text" 
-            id="city" 
-            value={formData.city}
-            onChange={handleChange}
-            required
-          />
-
-          <label htmlFor="state">State</label>
-          <Select
-            inputId="state"
-            options={stateOptions}
-            value={stateOptions.find(option => option.value === formData.state) || null}
-            onChange={(selectedOption) => {
-              setFormData({
-                ...formData,
-                state: selectedOption ? selectedOption.value : ''
-              });
-            }}
-            placeholder="Select State"
-            className="react-select-container"
-            classNamePrefix="react-select"
-          />
-
-          <label htmlFor="zipCode">Zip Code</label>
-          <input 
-            type="number" 
-            id="zipCode" 
-            value={formData.zipCode}
-            onChange={handleChange}
-            required
-          />
-        </fieldset>
-
-        <label htmlFor="department">Department</label>
-        <Select
-          inputId="department"
-          options={departmentOptions}
-          value={departmentOptions.find(option => option.value === formData.department) || null}
-          onChange={(selectedOption) => {
-            setFormData({
-              ...formData,
-              department: selectedOption ? selectedOption.value : 'Sales'
-            });
-          }}
-          placeholder="Select Department"
-          className="react-select-container"
-          classNamePrefix="react-select"
+        
+        <DepartmentField
+          formData={formData}
+          departmentOptions={departmentOptions}
+          handleSelectChange={handleSelectChange}
         />
 
         <button type="submit">Save</button>

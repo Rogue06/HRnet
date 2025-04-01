@@ -14,6 +14,78 @@ import {
 import { useVirtualizer } from '@tanstack/react-virtual';
 import './EmployeeList.css';
 
+// Composant pour afficher le contrôle de recherche
+const SearchControl = ({ globalFilter, onGlobalFilterChange, disabled }) => (
+  <div className="search-control">
+    <label>
+      Search: 
+      <input
+        value={globalFilter ?? ''}
+        onChange={e => onGlobalFilterChange(e.target.value)}
+        placeholder="Search all columns..."
+        className="search-input"
+        disabled={disabled}
+      />
+    </label>
+  </div>
+);
+
+// Composant pour afficher les informations de tri
+const SortInfo = ({ sorting, columns }) => (
+  <div className="sort-info">
+    <p>
+      {sorting.length > 0 ? (
+        <>
+          Le tableau est actuellement trié par <strong>
+            {sorting.map(sort => {
+              const column = columns.find(col => col.accessorKey === sort.id);
+              return column ? column.header : sort.id;
+            }).join(', ')}
+          </strong> en ordre {sorting[0]?.desc ? 'décroissant ▼' : 'croissant ▲'}
+        </>
+      ) : 'Cliquez sur l\'en-tête d\'une colonne pour trier les données'}
+    </p>
+    <p className="sort-help">
+      Cliquez sur l'en-tête d'une colonne pour trier l'ensemble du tableau selon cette colonne.
+    </p>
+  </div>
+);
+
+// Composant pour les entrées par page
+const EntriesControl = ({ pageSize, onPageSizeChange, disabled }) => (
+  <div className="entries-control">
+    <label>
+      Show 
+      <select
+        value={pageSize}
+        onChange={e => onPageSizeChange(Number(e.target.value))}
+        className="entries-select"
+        disabled={disabled}
+      >
+        {[10, 25].map(size => (
+          <option key={size} value={size}>
+            {size}
+          </option>
+        ))}
+      </select>
+      entries
+    </label>
+  </div>
+);
+
+// Fonction pour rendre les lignes skeleton durant le chargement (imite des lignes de tableau)
+const renderSkeletonRows = (columnsCount) => {
+  return Array.from({ length: 10 }).map((_, index) => (
+    <tr key={`skeleton-${index}`} className="skeleton-row">
+      {Array.from({ length: columnsCount }).map((_, colIndex) => (
+        <td key={`skeleton-cell-${colIndex}`} className="skeleton-cell">
+          <div className="skeleton-content"></div>
+        </td>
+      ))}
+    </tr>
+  ));
+};
+
 const EmployeeList = () => {
   const { employees, loading, resetToMockData } = useEmployees();
   const [globalFilter, setGlobalFilter] = useState('');
@@ -126,19 +198,6 @@ const EmployeeList = () => {
     overscan: 10, // Augmenté pour pré-rendre plus de lignes
   });
 
-  // Rendu des lignes skeleton pour le chargement initial
-  const renderSkeletonRows = () => {
-    return Array.from({ length: 10 }).map((_, index) => (
-      <tr key={`skeleton-${index}`} className="skeleton-row">
-        {Array.from({ length: columns.length }).map((_, colIndex) => (
-          <td key={`skeleton-cell-${colIndex}`} className="skeleton-cell">
-            <div className="skeleton-content"></div>
-          </td>
-        ))}
-      </tr>
-    ));
-  };
-
   return (
     <div className="container employee-list-container">
         <div className="logo-title">
@@ -150,39 +209,17 @@ const EmployeeList = () => {
         </div>
       
       <div className="table-controls">
-        <div className="entries-control">
-          <label>
-            Show 
-            <select
-              value={table.getState().pagination.pageSize}
-              onChange={e => {
-                table.setPageSize(Number(e.target.value));
-              }}
-              className="entries-select"
-              disabled={loading}
-            >
-              {[10, 25].map(pageSize => (
-                <option key={pageSize} value={pageSize}>
-                  {pageSize}
-                </option>
-              ))}
-            </select>
-            entries
-          </label>
-        </div>
+        <EntriesControl 
+          pageSize={table.getState().pagination.pageSize}
+          onPageSizeChange={table.setPageSize}
+          disabled={loading}
+        />
         
-        <div className="search-control">
-          <label>
-            Search: 
-            <input
-              value={globalFilter ?? ''}
-              onChange={e => setGlobalFilter(e.target.value)}
-              placeholder="Search all columns..."
-              className="search-input"
-              disabled={loading}
-            />
-          </label>
-        </div>
+        <SearchControl 
+          globalFilter={globalFilter}
+          onGlobalFilterChange={setGlobalFilter}
+          disabled={loading}
+        />
       </div>
       
       <div className="action-buttons">
@@ -199,23 +236,10 @@ const EmployeeList = () => {
         <p>No employees found. <Link to="/">Add some employees</Link></p>
       ) : (
         <>
-          <div className="sort-info">
-            <p>
-              {table.getState().sorting.length > 0 ? (
-                <>
-                  Le tableau est actuellement trié par <strong>
-                    {table.getState().sorting.map(sort => {
-                      const column = columns.find(col => col.accessorKey === sort.id);
-                      return column ? column.header : sort.id;
-                    }).join(', ')}
-                  </strong> en ordre {table.getState().sorting[0]?.desc ? 'décroissant ▼' : 'croissant ▲'}
-                </>
-              ) : 'Cliquez sur l\'en-tête d\'une colonne pour trier les données'}
-            </p>
-            <p className="sort-help">
-              Cliquez sur l'en-tête d'une colonne pour trier l'ensemble du tableau selon cette colonne.
-            </p>
-          </div>
+          <SortInfo 
+            sorting={table.getState().sorting}
+            columns={columns}
+          />
           
           <div 
             className={`table-container ${loading ? 'loading' : ''}`}
@@ -251,7 +275,7 @@ const EmployeeList = () => {
                               '▼'
                             )
                           ) : (
-                            '▲▼'
+                            ''
                           )}
                         </span>
                       </th>
@@ -260,32 +284,27 @@ const EmployeeList = () => {
                 ))}
               </thead>
               <tbody>
-                {loading || isInitialLoad ? (
-                  renderSkeletonRows()
+                {isInitialLoad ? (
+                  renderSkeletonRows(columns.length)
                 ) : useVirtualization ? (
-                  // Affichage virtualisé pour les grands ensembles de données
+                  // Mode virtualisé pour beaucoup de données
                   <>
-                    {/* Espace pour maintenir la taille du tableau pendant le défilement */}
-                    <tr className="virtualized-spacer">
-                      <td colSpan={columns.length} style={{ height: `${rowVirtualizer.getTotalSize()}px`, padding: 0, border: 'none' }} />
+                    <tr style={{ height: `${rowVirtualizer.getTotalSize()}px` }} className="virtual-spacer">
+                      <td colSpan={columns.length}></td>
                     </tr>
-                    
-                    {/* Lignes virtualisées */}
                     {rowVirtualizer.getVirtualItems().map(virtualRow => {
                       const row = rows[virtualRow.index];
                       return (
                         <tr 
                           key={row.id}
-                          className="virtualized-row"
                           style={{
                             height: `${virtualRow.size}px`,
                             transform: `translateY(${virtualRow.start - rowVirtualizer.options.scrollMargin}px)`,
-                            position: 'absolute',
-                            width: '100%',
                           }}
+                          className="virtual-row"
                         >
                           {row.getVisibleCells().map(cell => (
-                            <td key={cell.id} style={{ width: cell.column.columnDef.size }}>
+                            <td key={cell.id}>
                               {flexRender(
                                 cell.column.columnDef.cell,
                                 cell.getContext()
@@ -297,11 +316,11 @@ const EmployeeList = () => {
                     })}
                   </>
                 ) : (
-                  // Affichage standard pour les petits ensembles de données
-                  rows.map(row => (
+                  // Mode pagination standard
+                  table.getRowModel().rows.map(row => (
                     <tr key={row.id}>
                       {row.getVisibleCells().map(cell => (
-                        <td key={cell.id} style={{ width: cell.column.columnDef.size }}>
+                        <td key={cell.id}>
                           {flexRender(
                             cell.column.columnDef.cell,
                             cell.getContext()
@@ -313,78 +332,52 @@ const EmployeeList = () => {
                 )}
               </tbody>
             </table>
-            
-            {/* Indicateur de chargement */}
-            {loading && !isInitialLoad && (
-              <div className="loading-overlay">
-                <div className="loading-spinner"></div>
-              </div>
-            )}
           </div>
           
-          <div className="pagination">
-            <span>
-              {loading ? 'Chargement...' : `Showing ${table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1} to ${Math.min(
-                (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
-                table.getFilteredRowModel().rows.length
-              )} of ${table.getFilteredRowModel().rows.length} entries`}
+          <div className="pagination-controls">
+            <button
+              onClick={() => table.setPageIndex(0)}
+              disabled={!table.getCanPreviousPage() || loading}
+              className="pagination-button first-page-btn"
+            >
+              {"<<"}
+            </button>
+            <button
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage() || loading}
+              className="pagination-button prev-page-btn"
+            >
+              {"<"}
+            </button>
+            
+            <span className="pagination-info">
+              Page{' '}
+              <strong>
+                {table.getState().pagination.pageIndex + 1} de{' '}
+                {table.getPageCount()}
+              </strong>
             </span>
             
-            <div className="pagination-controls">
-              <button
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage() || loading}
-              >
-                Previous
-              </button>
-              
-              {Array.from({ length: Math.min(5, table.getPageCount()) }).map((_, index) => {
-                // Afficher un sous-ensemble de boutons de pagination si trop nombreux
-                const pageIndex = table.getState().pagination.pageIndex;
-                const maxPage = table.getPageCount() - 1;
-                let pageToShow;
-                
-                if (maxPage <= 4) {
-                  // Si moins de 5 pages, afficher toutes les pages normalement
-                  pageToShow = index;
-                } else if (pageIndex <= 2) {
-                  // Pour les premières pages, afficher les 5 premières
-                  pageToShow = index;
-                } else if (pageIndex >= maxPage - 2) {
-                  // Pour les dernières pages, afficher les 5 dernières
-                  pageToShow = maxPage - 4 + index;
-                } else {
-                  // Sinon, afficher 2 pages avant et 2 pages après la page actuelle
-                  pageToShow = pageIndex - 2 + index;
-                }
-                
-                return (
-                  <button
-                    key={pageToShow}
-                    onClick={() => table.setPageIndex(pageToShow)}
-                    className={
-                      table.getState().pagination.pageIndex === pageToShow ? 'active' : ''
-                    }
-                    disabled={loading}
-                  >
-                    {pageToShow + 1}
-                  </button>
-                );
-              })}
-              
-              <button
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage() || loading}
-              >
-                Next
-              </button>
-            </div>
+            <button
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage() || loading}
+              className="pagination-button next-page-btn"
+            >
+              {">"}
+            </button>
+            <button
+              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+              disabled={!table.getCanNextPage() || loading}
+              className="pagination-button last-page-btn"
+            >
+              {">>"}
+            </button>
           </div>
         </>
       )}
       
-      <div className="action-buttons">
-        <Link to="/" className="home-link">Home</Link>
+      <div className="nav-link-container">
+        <Link to="/" className="nav-link">Retour à l'accueil</Link>
       </div>
     </div>
   );

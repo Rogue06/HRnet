@@ -4,6 +4,37 @@ import { mockEmployees, generateMockEmployees } from '../data/mockEmployees';
 // Pour activer/désactiver les données mockées, change simplement cette valeur
 const ENABLE_MOCK_DATA = false; // true pour activer, false pour désactiver
 
+// Fonction pour stocker les employés dans le localStorage de façon sécurisée
+const saveEmployeesToStorage = (employees) => {
+  try {
+    localStorage.setItem('employees', JSON.stringify(employees));
+    return true;
+  } catch (error) {
+    console.error('Erreur lors de la sauvegarde des employés:', error);
+    return false;
+  }
+};
+
+// Fonction pour charger les employés depuis le localStorage de façon sécurisée
+const loadEmployeesFromStorage = () => {
+  try {
+    const storedEmployees = localStorage.getItem('employees');
+    return storedEmployees ? JSON.parse(storedEmployees) : null;
+  } catch (error) {
+    console.error('Erreur lors du chargement des employés:', error);
+    return null;
+  }
+};
+
+// Fonction pour exécuter une opération asynchrone de manière non bloquante
+const executeAsync = (callback) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(callback());
+    }, 0);
+  });
+};
+
 // Étape 1: Création du contexte
 // C'est comme créer une "boîte" vide qui pourra contenir des données
 const EmployeeContext = createContext();
@@ -24,7 +55,7 @@ export const useEmployees = () => {
 };
 
 // Étape 2: Création du Provider (fournisseur de données)
-// C'est un composant qui va "emballer" l'application et fournir les données à tous les composants enfants
+// C'est un composant qui va "emballer/envelopper" l'application et fournir les données à tous les composants enfants
 export const EmployeeProvider = ({ children }) => {
   // State local pour stocker les employés
   const [employees, setEmployees] = useState([]);
@@ -35,21 +66,17 @@ export const EmployeeProvider = ({ children }) => {
   const loadEmployees = useCallback(() => {
     setLoading(true);
     
-    // Utilisation de setTimeout pour ne pas bloquer le thread principal
-    setTimeout(() => {
+    executeAsync(() => {
       try {
-        const storedEmployees = localStorage.getItem('employees');
+        const storedEmployees = loadEmployeesFromStorage();
+        
         if (storedEmployees) {
-          setEmployees(JSON.parse(storedEmployees));
+          setEmployees(storedEmployees);
         } else {
           // Si aucune donnée n'existe, utiliser les données fictives ou un tableau vide
-          if (ENABLE_MOCK_DATA) {
-            setEmployees(mockEmployees);
-            localStorage.setItem('employees', JSON.stringify(mockEmployees));
-          } else {
-            setEmployees([]);
-            localStorage.setItem('employees', JSON.stringify([]));
-          }
+          const initialData = ENABLE_MOCK_DATA ? mockEmployees : [];
+          setEmployees(initialData);
+          saveEmployeesToStorage(initialData);
         }
       } catch (error) {
         console.error('Erreur lors du chargement des employés:', error);
@@ -58,7 +85,7 @@ export const EmployeeProvider = ({ children }) => {
       } finally {
         setLoading(false);
       }
-    }, 0);
+    });
   }, []);
 
   // À l'initialisation, on récupère les employés du localStorage (s'il y en a)
@@ -70,17 +97,17 @@ export const EmployeeProvider = ({ children }) => {
   const addEmployee = (employee) => {
     setLoading(true);
     
-    setTimeout(() => {
+    executeAsync(() => {
       try {
         const updatedEmployees = [...employees, employee];
         setEmployees(updatedEmployees);
-        localStorage.setItem('employees', JSON.stringify(updatedEmployees));
+        saveEmployeesToStorage(updatedEmployees);
       } catch (error) {
         console.error('Erreur lors de l\'ajout d\'un employé:', error);
       } finally {
         setLoading(false);
       }
-    }, 0);
+    });
     
     return true;
   };
@@ -89,18 +116,18 @@ export const EmployeeProvider = ({ children }) => {
   const resetToMockData = () => {
     setLoading(true);
     
-    setTimeout(() => {
+    executeAsync(() => {
       try {
         // Générer de nouvelles données mockées pour éviter les références
         const freshMockData = generateMockEmployees(50);
         setEmployees(freshMockData);
-        localStorage.setItem('employees', JSON.stringify(freshMockData));
+        saveEmployeesToStorage(freshMockData);
       } catch (error) {
         console.error('Erreur lors de la réinitialisation des données:', error);
       } finally {
         setLoading(false);
       }
-    }, 0);
+    });
   };
 
   // On fournit les données et fonctions que l'on veut rendre disponibles
